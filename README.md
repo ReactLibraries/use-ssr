@@ -29,6 +29,8 @@ App.getInitialProps = async ({ Component, router, AppTree }: AppContext) => {
 export default App
 ```
 
+- pages/index.tsx
+
 ```tsx
 import React from 'react'
 import { useSSR } from '@react-libraries/use-ssr'
