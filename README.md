@@ -12,7 +12,7 @@ The difference with 'getStaticProps' is that the same code can be used for both 
 _app.tsx
 
 ```tsx
-import { CachesType, createCache, getDataFromTree } from '@/hooks/useSSR'
+import { CachesType, createCache, getDataFromTree } from '@react-libraries/use-ssr'
 import { AppContext, AppProps } from 'next/app'
 
 const App = (props: AppProps & { cache: CachesType }) => {
