@@ -1,0 +1,34 @@
+{
+  "name": "@react-libraries/use-ssr",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -b",
+    "test": "jest --coverage",
+    "test:update": "jest -u --watch --coverage",
+    "lint": "eslint --fix ./src ./test",
+    "lint:fix": "eslint --fix ./src"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@react-libraries/use-global-state": "*",
+    "next": "*",
+    "react": "*",
+    "react-dom": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^16.9.2",
+    "@types/react": "^17.0.21",
+    "@types/react-dom": "^17.0.9",
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
+    "@typescript-eslint/parser": "^4.31.1",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.2",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.4.1",
+    "typescript": "^4.4.3"
+  }
+}
