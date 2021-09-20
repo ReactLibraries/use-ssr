@@ -8,6 +8,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+        with:
+          cache: yarn
       - name: Package install
         run: yarn
   ESLint:
@@ -17,6 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+        with:
+          cache: yarn
       - name: Lint
         run: yarn lint
   Test:
@@ -26,6 +30,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+        with:
+          cache: yarn
       - name: Test
         run: yarn test
   Build:
@@ -35,6 +41,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+        with:
+          cache: yarn
       - name: Build
         run: yarn build
 
