@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          cache: yarn
+          cache: npm
   ESLint:
     name: ESLint
     needs: Modules
@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          cache: yarn
+          cache: npm
       - name: Lint
         run: yarn lint
   Test:
@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          cache: yarn
+          cache: npm
       - name: Test
         run: yarn test
   Build:
@@ -40,7 +40,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          cache: yarn
+          cache: npm
       - name: Build
         run: yarn build
 
