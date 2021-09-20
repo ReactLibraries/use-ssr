@@ -10,6 +10,8 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           cache: npm
+      - name: Package install
+        run: yarn
   ESLint:
     name: ESLint
     needs: Modules
