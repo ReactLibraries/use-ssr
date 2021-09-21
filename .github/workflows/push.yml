@@ -7,22 +7,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Cache modules(yarn.lock)
+        id: cache
+        uses: actions/cache@v2
         with:
-          node-version: '14'
-          cache: yarn
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.OS }}-build-${{ env.cache-name }}
       - name: Package install
-        run: yarn install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn
   ESLint:
     name: ESLint
     needs: Modules
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Cache modules(yarn.lock)
+        id: cache
+        uses: actions/cache@v2
         with:
-          node-version: '14'
-          cache: yarn
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.OS }}-build-${{ env.cache-name }}
       - name: Lint
         run: yarn lint
   Test:
@@ -31,10 +38,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Cache modules(yarn.lock)
+        id: cache
+        uses: actions/cache@v2
         with:
-          node-version: '14'
-          cache: yarn
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.OS }}-build-${{ env.cache-name }}
       - name: Test
         run: yarn test
   Build:
@@ -43,10 +53,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Cache modules(yarn.lock)
+        id: cache
+        uses: actions/cache@v2
         with:
-          node-version: '14'
-          cache: yarn
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.OS }}-build-${{ env.cache-name }}
       - name: Build
         run: yarn build
 
