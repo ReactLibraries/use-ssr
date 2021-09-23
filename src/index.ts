@@ -1,7 +1,6 @@
 import { useGlobalState, getCache, setCache, Provider } from '@react-libraries/use-global-state';
 import { createElement, ReactElement } from 'react';
 import ReactDOMServer from 'react-dom/server';
-const IS_SERVER = !process.browser;
 const GlobalKey = '@react-libraries/use-ssr';
 
 export type CachesType<T = unknown> = {
@@ -56,7 +55,7 @@ export const useSSR: {
 };
 
 export const getDataFromTree = async (element: ReactElement): Promise<CachesType> => {
-  if (!IS_SERVER) return Promise.resolve({});
+  if (process.browser) return Promise.resolve({});
   return new Promise<CachesType>((resolve) => {
     const value = {};
     const appStream = ReactDOMServer.renderToStaticNodeStream(

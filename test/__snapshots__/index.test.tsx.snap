@@ -1,28 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SSR 1`] = `
+exports[`Client 1`] = `
 Object {
   "[@react-libraries/use-ssr][Component01]": 100,
 }
 `;
 
-exports[`SSR 2`] = `
+exports[`Client 2`] = `
 NodeList [
   100,
   2,
 ]
 `;
 
-exports[`SSR 3`] = `
+exports[`Client 3`] = `
 NodeList [
   100,
   1,
 ]
 `;
 
-exports[`SSR 4`] = `Object {}`;
+exports[`Client 4`] = `Object {}`;
 
-exports[`SSR 5`] = `
+exports[`Client 5`] = `
 NodeList [
   100,
   1,
@@ -31,17 +31,28 @@ NodeList [
 ]
 `;
 
-exports[`SSR 6`] = `
+exports[`Client 6`] = `
 Object {
   "[@react-libraries/use-ssr][Component01]": 100,
   "[@react-libraries/use-ssr][Component][02]": 100,
 }
 `;
 
-exports[`SSR 7`] = `
+exports[`Client 7`] = `
 NodeList [
   100,
   1,
+  100,
+  1,
+]
+`;
+
+exports[`SSR 1`] = `Object {}`;
+
+exports[`SSR 2`] = `
+NodeList [
+  100,
+  2,
   100,
   1,
 ]
