@@ -25,16 +25,16 @@ export const useSSR: {
   <T>(
     key: string | string[],
     handle: (state: T, set: (data: T | ((data: T) => T)) => void) => Promise<void>,
-    initialData: T | (() => T)
+    initialData?: T | (() => T)
   ): readonly [T, (data: T | ((data: T) => T)) => void];
   <K, T = K | undefined>(
     key: string | string[],
-    handle: (state: T, set: (data: T | ((data: T) => T)) => void) => Promise<void>,
+    handle?: (state: T, set: (data: T | ((data: T) => T)) => void) => Promise<void>,
     initialData?: K | (() => T)
   ): readonly [T, (data: T | ((data: T) => T)) => void];
 } = <K, T = K | undefined>(
   key: string | string[],
-  handle: (
+  handle?: (
     state: T | undefined,
     set: (data: undefined | T | ((data: T | undefined) => T)) => void
   ) => Promise<void>,
@@ -42,13 +42,15 @@ export const useSSR: {
 ) => {
   const keys = Array.isArray(key) ? key : [key];
   const [state, setState] = useGlobalState<T | undefined>([GlobalKey, ...keys], initialData);
-  const keyName = keys.join('-');
-  if (!validating.has(keyName)) {
-    validating.add(keyName);
-    handle(state, setState).then(() => {
-      validating.delete(keys.join('-'));
-      validatingEvent();
-    });
+  if (handle) {
+    const keyName = keys.join('-');
+    if (!validating.has(keyName)) {
+      validating.add(keyName);
+      handle(state, setState).then(() => {
+        validating.delete(keys.join('-'));
+        validatingEvent();
+      });
+    }
   }
 
   return [state, setState] as const;

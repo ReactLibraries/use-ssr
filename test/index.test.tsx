@@ -43,6 +43,10 @@ const Component02 = () => {
   }, []);
   return <>{[state, count]}</>;
 };
+const Component03 = () => {
+  const [state] = useSSR<number>(['Component', '02']);
+  return <>{[state]}</>;
+};
 
 it('Client', async () => {
   await act(async () => {
@@ -115,12 +119,13 @@ it('Client', async () => {
 });
 
 it('SSR', async () => {
-  (process as { browser: boolean }).browser = true;
+  (process as { browser?: boolean }).browser = true;
   await act(async () => {
     const cache = await getDataFromTree(
       <>
         <Component01 />
         <Component02 />
+        <Component03 />
       </>
     );
     expect(cache).toMatchSnapshot();
@@ -129,6 +134,7 @@ it('SSR', async () => {
       <>
         <Component01 />
         <Component02 />
+        <Component03 />
       </>,
       container
     );
