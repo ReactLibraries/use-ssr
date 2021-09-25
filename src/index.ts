@@ -1,4 +1,11 @@
-import { useGlobalState, getCache, setCache, Provider } from '@react-libraries/use-global-state';
+import {
+  useGlobalState,
+  getCache,
+  setCache,
+  Provider,
+  useMutation as useMut,
+  useQuery as useQue,
+} from '@react-libraries/use-global-state';
 import { createElement, ReactElement } from 'react';
 import ReactDOMServer from 'react-dom/server';
 const GlobalKey = '@react-libraries/use-ssr';
@@ -54,6 +61,22 @@ export const useSSR: {
   }
 
   return [state, setState] as const;
+};
+
+export const useMutation = () => {
+  const dispatch = useMut();
+  return <T>(key: string | string[], state: T | Promise<T> | ((data: T) => T | Promise<T>)) => {
+    const keys = Array.isArray(key) ? key : [key];
+    dispatch<T>([GlobalKey, ...keys], state);
+  };
+};
+
+export const useQuery = () => {
+  const dispatch = useQue();
+  return <T>(key: string | string[]) => {
+    const keys = Array.isArray(key) ? key : [key];
+    return dispatch<T>([GlobalKey, ...keys]);
+  };
 };
 
 export const getDataFromTree = async (element: ReactElement): Promise<CachesType> => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { reset } from '@react-libraries/use-global-state';
-import { createCache, getDataFromTree, useSSR } from '../src';
+import { createCache, getDataFromTree, useMutation, useQuery, useSSR } from '../src';
 
 let container: HTMLElement;
 beforeEach(() => {
@@ -27,7 +27,7 @@ const Component01 = () => {
   useEffect(() => {
     setState(200);
   }, []);
-  return <>{[state, count]}</>;
+  return <>{[state, count].join(',')}</>;
 };
 const Component02 = () => {
   const [count, setCount] = useState(0);
@@ -41,11 +41,21 @@ const Component02 = () => {
   useEffect(() => {
     setState(undefined);
   }, []);
-  return <>{[state, count]}</>;
+  return <>{[state, count].join(',')}</>;
 };
 const Component03 = () => {
   const [state] = useSSR<number>(['Component', '02']);
   return <>{[state]}</>;
+};
+
+const Component04 = () => {
+  const query = useQuery();
+  const dispatch = useMutation();
+  useEffect(() => {
+    setTimeout(() => dispatch('Component01', 123), 10);
+    setTimeout(() => dispatch(['Component', '02'], 123), 10);
+  }, []);
+  return <>{[query('Component01'), query(['Component', '02'])].join(',')}</>;
 };
 
 it('Client', async () => {
@@ -135,6 +145,34 @@ it('SSR', async () => {
         <Component01 />
         <Component02 />
         <Component03 />
+      </>,
+      container
+    );
+    await new Promise((r) => setTimeout(r, 100));
+  });
+
+  expect(container.childNodes).toMatchSnapshot();
+});
+
+it('Mutation-Query', async () => {
+  (process as { browser?: boolean }).browser = true;
+  await act(async () => {
+    const cache = await getDataFromTree(
+      <>
+        <Component01 />
+        <Component02 />
+        <Component03 />
+        <Component04 />
+      </>
+    );
+    expect(cache).toMatchSnapshot();
+    createCache(cache);
+    render(
+      <>
+        <Component01 />
+        <Component02 />
+        <Component03 />
+        <Component04 />
       </>,
       container
     );

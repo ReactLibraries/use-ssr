@@ -1,6 +1,6 @@
 {
   "name": "@react-libraries/use-ssr",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
@@ -14,7 +14,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@react-libraries/use-global-state": "*",
+    "@react-libraries/use-global-state": "^1.0.7",
     "next": "*",
     "react": "*",
     "react-dom": "*"

@@ -8,15 +8,13 @@ Object {
 
 exports[`Client 2`] = `
 NodeList [
-  100,
-  2,
+  100,2,
 ]
 `;
 
 exports[`Client 3`] = `
 NodeList [
-  100,
-  1,
+  100,1,
 ]
 `;
 
@@ -24,10 +22,8 @@ exports[`Client 4`] = `Object {}`;
 
 exports[`Client 5`] = `
 NodeList [
-  100,
-  1,
-  100,
-  1,
+  100,1,
+  100,1,
 ]
 `;
 
@@ -40,10 +36,19 @@ Object {
 
 exports[`Client 7`] = `
 NodeList [
-  100,
-  1,
-  100,
-  1,
+  100,1,
+  100,1,
+]
+`;
+
+exports[`Mutation-Query 1`] = `Object {}`;
+
+exports[`Mutation-Query 2`] = `
+NodeList [
+  100,3,
+  123,1,
+  123,
+  100,10,
 ]
 `;
 
@@ -51,10 +56,8 @@ exports[`SSR 1`] = `Object {}`;
 
 exports[`SSR 2`] = `
 NodeList [
-  100,
-  2,
-  100,
-  1,
+  100,2,
+  100,1,
   100,
 ]
 `;
