@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
-import { reset } from '@react-libraries/use-global-state';
-import { createCache, getDataFromTree, useMutation, useQuery, useSSR } from '../src';
+import { getCache, reset } from '@react-libraries/use-global-state';
+import { clearCache, createCache, getDataFromTree, useMutation, useQuery, useSSR } from '../src';
 
 let container: HTMLElement;
 beforeEach(() => {
@@ -33,9 +33,9 @@ const Component02 = () => {
   const [count, setCount] = useState(0);
   const [state, setState] = useSSR<number>(['Component', '02'], async (state, setState) => {
     if (state !== undefined) return;
-    setState(10);
+    await new Promise((resolve) => setTimeout(() => { setState(10); resolve(undefined) }, 0));
     await new Promise((resolve) => setTimeout(resolve, 1));
-    setState(100);
+    await new Promise((resolve) => setTimeout(() => { setState(100); resolve(undefined) }, 0));
     setCount((v) => v + 1);
   });
   useEffect(() => {
@@ -129,7 +129,7 @@ it('Client', async () => {
 });
 
 it('SSR', async () => {
-  (process as { browser?: boolean }).browser = true;
+  (process as { browser?: boolean }).browser = false;
   await act(async () => {
     const cache = await getDataFromTree(
       <>
@@ -152,6 +152,64 @@ it('SSR', async () => {
   });
 
   expect(container.childNodes).toMatchSnapshot();
+});
+
+it('Context', async () => {
+  (process as { browser?: boolean }).browser = false;
+  await act(async () => {
+    const value = { cache: { '[@react-libraries/use-ssr][Component][02]': 1000 } }
+    const cache = await getDataFromTree(
+      <>
+        <Component01 />
+        <Component02 />
+        <Component03 />
+      </>, value
+    );
+    expect(cache).toMatchSnapshot();
+    createCache(cache);
+    render(
+      <>
+        <Component01 />
+        <Component02 />
+        <Component03 />
+      </>,
+      container
+    );
+    await new Promise((r) => setTimeout(r, 100));
+  });
+
+  expect(container.childNodes).toMatchSnapshot();
+});
+it('Clear', async () => {
+  (process as { browser?: boolean }).browser = true;
+  const value = { '[@react-libraries/use-ssr][Component][02]': 1000 }
+  createCache(value)
+  await act(async () => {
+    render(
+      <>
+        <Component03 />
+      </>,
+      container
+    );
+  });
+  expect(container).toMatchSnapshot();
+})
+it('Clear2', async () => {
+  (process as { browser?: boolean }).browser = true;
+  const value = { '[@react-libraries/use-ssr][Component][02]': 1000 }
+  createCache(value)
+  clearCache();
+  clearCache("Component");
+  clearCache(["Component", "02"]);
+  await act(async () => {
+    render(
+      <>
+        <Component03 />
+      </>,
+      container
+    );
+  });
+  expect(container).toMatchSnapshot();
 });
 
 it('Mutation-Query', async () => {

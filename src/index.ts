@@ -5,6 +5,7 @@ import {
   Provider,
   useMutation as useMut,
   useQuery as useQue,
+  clearCache as clCache,
 } from '@react-libraries/use-global-state';
 import { createElement, ReactElement } from 'react';
 import ReactDOMServer from 'react-dom/server';
@@ -78,11 +79,19 @@ export const useQuery = () => {
     return dispatch<T>([GlobalKey, ...keys]);
   };
 };
-
-export const getDataFromTree = async (element: ReactElement): Promise<CachesType> => {
+export const clearCache = (keys?: string | string[]) => {
+  if (!keys) clCache(GlobalKey);
+  else {
+    clCache([GlobalKey, ...(Array.isArray(keys) ? keys : [keys])]);
+  }
+};
+export const getDataFromTree = async (
+  element: ReactElement,
+  srcCache?: CachesType
+): Promise<CachesType> => {
   if (process.browser) return Promise.resolve({});
   return new Promise<CachesType>((resolve) => {
-    const value = {};
+    const value = srcCache || {};
     const appStream = ReactDOMServer.renderToStaticNodeStream(
       createElement(Provider, { value }, element)
     );

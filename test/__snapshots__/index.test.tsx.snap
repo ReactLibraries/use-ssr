@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Clear 1`] = `
+<div>
+  1000
+</div>
+`;
+
+exports[`Clear2 1`] = `<div />`;
+
 exports[`Client 1`] = `
 Object {
   "[@react-libraries/use-ssr][Component01]": 100,
@@ -41,6 +49,21 @@ NodeList [
 ]
 `;
 
+exports[`Context 1`] = `
+Object {
+  "[@react-libraries/use-ssr][Component01]": 100,
+  "[@react-libraries/use-ssr][Component][02]": 1000,
+}
+`;
+
+exports[`Context 2`] = `
+NodeList [
+  100,1,
+  100,1,
+  100,
+]
+`;
+
 exports[`Mutation-Query 1`] = `Object {}`;
 
 exports[`Mutation-Query 2`] = `
@@ -48,15 +71,20 @@ NodeList [
   100,3,
   123,1,
   123,
-  100,10,
+  100,,
 ]
 `;
 
-exports[`SSR 1`] = `Object {}`;
+exports[`SSR 1`] = `
+Object {
+  "[@react-libraries/use-ssr][Component01]": 100,
+  "[@react-libraries/use-ssr][Component][02]": 100,
+}
+`;
 
 exports[`SSR 2`] = `
 NodeList [
-  100,2,
+  100,1,
   100,1,
   100,
 ]
