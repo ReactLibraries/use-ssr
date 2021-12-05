@@ -7,10 +7,10 @@ import {
   useQuery as useQue,
   clearCache as clCache,
 } from '@react-libraries/use-global-state';
+export { createContextCache, Provider } from '@react-libraries/use-global-state';
 import { createElement, ReactElement } from 'react';
 import ReactDOMServer from 'react-dom/server';
 const GlobalKey = '@react-libraries/use-ssr';
-
 export type CachesType<T = unknown> = {
   [key: string]: T;
 };
@@ -87,21 +87,21 @@ export const clearCache = (keys?: string | string[]) => {
 };
 export const getDataFromTree = async (
   element: ReactElement,
-  srcCache?: CachesType
+  value?: CachesType
 ): Promise<CachesType> => {
   if (process.browser) return Promise.resolve({});
   return new Promise<CachesType>((resolve) => {
-    const value = srcCache || {};
+    let cache = value;
     const appStream = ReactDOMServer.renderToStaticNodeStream(
-      createElement(Provider, { value }, element)
+      createElement(Provider, { value, onUpdate: (v) => (cache = v) }, element)
     );
     appStream.read();
     if (!isValidating()) {
-      resolve(getCache([GlobalKey], value as never));
+      resolve(getCache([GlobalKey], cache as never));
     } else {
       const listener = () => {
+        resolve(getCache([GlobalKey], cache as never));
         removeEvent('end', listener);
-        resolve(getCache([GlobalKey], value as never));
       };
       addEvent('end', listener);
     }

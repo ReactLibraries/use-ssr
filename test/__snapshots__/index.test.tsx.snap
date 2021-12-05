@@ -10,7 +10,7 @@ exports[`Clear2 1`] = `<div />`;
 
 exports[`Client 1`] = `
 Object {
-  "[@react-libraries/use-ssr][Component01]": 100,
+  "%40react-libraries%2Fuse-ssr/Component01/": 100,
 }
 `;
 
@@ -26,7 +26,11 @@ NodeList [
 ]
 `;
 
-exports[`Client 4`] = `Object {}`;
+exports[`Client 4`] = `
+Object {
+  "%40react-libraries%2Fuse-ssr/Component01/": 100,
+}
+`;
 
 exports[`Client 5`] = `
 NodeList [
@@ -37,8 +41,8 @@ NodeList [
 
 exports[`Client 6`] = `
 Object {
-  "[@react-libraries/use-ssr][Component01]": 100,
-  "[@react-libraries/use-ssr][Component][02]": 100,
+  "%40react-libraries%2Fuse-ssr/Component/02/": 100,
+  "%40react-libraries%2Fuse-ssr/Component01/": 100,
 }
 `;
 
@@ -51,8 +55,8 @@ NodeList [
 
 exports[`Context 1`] = `
 Object {
-  "[@react-libraries/use-ssr][Component01]": 100,
-  "[@react-libraries/use-ssr][Component][02]": 1000,
+  "%40react-libraries%2Fuse-ssr/Component/02/": 1000,
+  "%40react-libraries%2Fuse-ssr/Component01/": 100,
 }
 `;
 
@@ -77,8 +81,8 @@ NodeList [
 
 exports[`SSR 1`] = `
 Object {
-  "[@react-libraries/use-ssr][Component01]": 100,
-  "[@react-libraries/use-ssr][Component][02]": 100,
+  "%40react-libraries%2Fuse-ssr/Component/02/": 100,
+  "%40react-libraries%2Fuse-ssr/Component01/": 100,
 }
 `;
 
