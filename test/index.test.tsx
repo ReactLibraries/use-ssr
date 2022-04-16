@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { act } from 'react-dom/test-utils';
 import { reset } from '@react-libraries/use-global-state';
 import {
@@ -11,17 +11,18 @@ import {
   useSSR,
   createContextCache,
 } from '../src';
-
 let container: HTMLElement;
+let prev;
 beforeEach(() => {
   reset();
   container = document.createElement('div');
-  document.body.appendChild(container);
+  prev = global.IS_REACT_ACT_ENVIRONMENT;
+  global.IS_REACT_ACT_ENVIRONMENT = true;
 });
 
 afterEach(() => {
-  unmountComponentAtNode(container);
   container.remove();
+  global.IS_REACT_ACT_ENVIRONMENT = prev;
 });
 
 const Component01 = () => {
@@ -80,50 +81,52 @@ it('Client', async () => {
   await act(async () => {
     const cache = await getDataFromTree(<Component01 />);
     expect(cache).toMatchSnapshot();
-    render(
+  });
+  let root = createRoot(container);
+  await act(async () => {
+    root.render(
       <>
         <Component01 />
-      </>,
-      container
+      </>
     );
   });
   expect(container.childNodes).toMatchSnapshot();
-
-  unmountComponentAtNode(container);
-  container.remove();
-
+  await act(() => {
+    root.unmount();
+  });
+  root = createRoot(container);
   await act(async () => {
     const cache = await getDataFromTree(<Component01 />);
     createCache(cache);
-    render(
+    root.render(
       <>
         <Component01 />
-      </>,
-      container
+      </>
     );
   });
   expect(container.childNodes).toMatchSnapshot();
 
-  unmountComponentAtNode(container);
-  container.remove();
-
+  await act(() => {
+    root.unmount();
+  });
+  root = createRoot(container);
   await act(async () => {
     const cache = await getDataFromTree(<></>);
     expect(cache).toMatchSnapshot();
     createCache(cache);
-    render(
+    root.render(
       <>
         <Component01 />
         <Component02 />
-      </>,
-      container
+      </>
     );
     await new Promise((r) => setTimeout(r, 100));
   });
   expect(container.childNodes).toMatchSnapshot();
-  unmountComponentAtNode(container);
-  container.remove();
-
+  await act(() => {
+    root.unmount();
+  });
+  root = createRoot(container);
   await act(async () => {
     const cache = await getDataFromTree(
       <>
@@ -133,12 +136,11 @@ it('Client', async () => {
     );
     expect(cache).toMatchSnapshot();
     createCache(cache);
-    render(
+    root.render(
       <>
         <Component01 />
         <Component02 />
-      </>,
-      container
+      </>
     );
     await new Promise((r) => setTimeout(r, 100));
   });
@@ -147,6 +149,7 @@ it('Client', async () => {
 });
 
 it('SSR', async () => {
+  const root = createRoot(container);
   (process as { browser?: boolean }).browser = false;
   await act(async () => {
     const cache = await getDataFromTree(
@@ -158,13 +161,12 @@ it('SSR', async () => {
     );
     expect(cache).toMatchSnapshot();
     createCache(cache);
-    render(
+    root.render(
       <>
         <Component01 />
         <Component02 />
         <Component03 />
-      </>,
-      container
+      </>
     );
     await new Promise((r) => setTimeout(r, 100));
   });
@@ -173,6 +175,7 @@ it('SSR', async () => {
 });
 
 it('Context', async () => {
+  const root = createRoot(container);
   (process as { browser?: boolean }).browser = false;
   await act(async () => {
     const value = createContextCache([[['@react-libraries/use-ssr', 'Component', '02'], 1000]]);
@@ -186,13 +189,12 @@ it('Context', async () => {
     );
     expect(cache).toMatchSnapshot();
     createCache(cache);
-    render(
+    root.render(
       <>
         <Component01 />
         <Component02 />
         <Component03 />
-      </>,
-      container
+      </>
     );
     await new Promise((r) => setTimeout(r, 100));
   });
@@ -200,20 +202,21 @@ it('Context', async () => {
   expect(container.childNodes).toMatchSnapshot();
 });
 it('Clear', async () => {
+  const root = createRoot(container);
   (process as { browser?: boolean }).browser = true;
   const value = createContextCache([[['@react-libraries/use-ssr', 'Component', '02'], 1000]]);
   createCache(value);
   await act(async () => {
-    render(
+    root.render(
       <>
         <Component03 />
-      </>,
-      container
+      </>
     );
   });
   expect(container).toMatchSnapshot();
 });
 it('Clear2', async () => {
+  const root = createRoot(container);
   (process as { browser?: boolean }).browser = true;
   const value = createContextCache([[['@react-libraries/use-ssr', 'Component', '02'], 1000]]);
   createCache(value);
@@ -221,17 +224,17 @@ it('Clear2', async () => {
   clearCache('Component');
   clearCache(['Component', '02']);
   await act(async () => {
-    render(
+    root.render(
       <>
         <Component03 />
-      </>,
-      container
+      </>
     );
   });
   expect(container).toMatchSnapshot();
 });
 
 it('Mutation-Query', async () => {
+  const root = createRoot(container);
   (process as { browser?: boolean }).browser = true;
   await act(async () => {
     const cache = await getDataFromTree(
@@ -244,14 +247,13 @@ it('Mutation-Query', async () => {
     );
     expect(cache).toMatchSnapshot();
     createCache(cache);
-    render(
+    root.render(
       <>
         <Component01 />
         <Component02 />
         <Component03 />
         <Component04 />
-      </>,
-      container
+      </>
     );
     await new Promise((r) => setTimeout(r, 1000));
   });

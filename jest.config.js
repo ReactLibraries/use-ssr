@@ -1,7 +1,7 @@
 module.exports = {
-  testEnvironment: 'jsdom',
+  testEnvironment: './env.js',
   roots: ['<rootDir>/test'],
   transform: {
-    '^.+\\.(ts|tsx)$': '@swc-node/jest',
-  }
+    '^.+\\.(ts|tsx)$': ['@swc-node/jest'],
+  },
 };

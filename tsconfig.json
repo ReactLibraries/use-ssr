@@ -93,7 +93,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "env.js"  ],
   "exclude": [
     "node_modules",
     "dist/**/*",

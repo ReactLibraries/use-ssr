@@ -16,40 +16,39 @@ Object {
 
 exports[`Client 2`] = `
 NodeList [
-  100,2,
+  200,1,
 ]
 `;
 
 exports[`Client 3`] = `
 NodeList [
-  100,1,
+  200,0,
 ]
 `;
 
 exports[`Client 4`] = `
 Object {
-  "%40react-libraries%2Fuse-ssr/Component01/": 100,
+  "%40react-libraries%2Fuse-ssr/Component01/": 200,
 }
 `;
 
 exports[`Client 5`] = `
 NodeList [
-  100,1,
-  100,1,
+  200,1,
+  ,0,
 ]
 `;
 
 exports[`Client 6`] = `
 Object {
-  "%40react-libraries%2Fuse-ssr/Component/02/": 100,
   "%40react-libraries%2Fuse-ssr/Component01/": 100,
 }
 `;
 
 exports[`Client 7`] = `
 NodeList [
-  100,1,
-  100,1,
+  200,0,
+  ,0,
 ]
 `;
 
@@ -62,9 +61,8 @@ Object {
 
 exports[`Context 2`] = `
 NodeList [
-  100,1,
-  100,1,
-  100,
+  200,0,
+  ,0,
 ]
 `;
 
@@ -72,9 +70,9 @@ exports[`Mutation-Query 1`] = `Object {}`;
 
 exports[`Mutation-Query 2`] = `
 NodeList [
-  100,3,
-  123,1,
-  123,
+  200,1,
+  10,0,
+  10,
   100,,
 ]
 `;
@@ -88,8 +86,7 @@ Object {
 
 exports[`SSR 2`] = `
 NodeList [
-  100,1,
-  100,1,
-  100,
+  200,0,
+  ,0,
 ]
 `;
