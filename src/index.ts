@@ -10,7 +10,7 @@ import {
 export { createContextCache, Provider } from '@react-libraries/use-global-state';
 import { createElement, ReactElement } from 'react';
 
-import ReactDOMServer from 'react-dom/server.browser';
+import { renderToStaticNodeStream, renderToStaticMarkup } from 'react-dom/server.browser';
 const GlobalKey = '@react-libraries/use-ssr';
 export type CachesType<T = unknown> = {
   [key: string]: T;
@@ -93,9 +93,7 @@ export const getDataFromTree = async (
   if (process.browser) return Promise.resolve({});
   return new Promise<CachesType>((resolve) => {
     let cache = value;
-    ReactDOMServer.renderToReadableStream(
-      createElement(Provider, { value, onUpdate: (v) => (cache = v) }, element)
-    );
+    renderToStaticMarkup(createElement(Provider, { value, onUpdate: (v) => (cache = v) }, element));
     if (!isValidating()) {
       resolve(getCache([GlobalKey], cache as never));
     } else {
